@@ -5,6 +5,7 @@ import NumberButton from '../components/buttons/NumberButton';
 import ActionButton from '../components/buttons/ActionButton';
 import PlayersList from '../components/lists/playersList/PlayersList';
 import {useNavigation, NavigationProp} from '@react-navigation/native';
+import AddPlayerBottomSheet from '../components/bottomsheets/AddPlayerBottomSheet';
 
 const CreateTeam = () => {
   const navigation = useNavigation<NavigationProp<any>>();
@@ -57,6 +58,9 @@ const CreateTeam = () => {
           />
         </View>
       </View>
+
+      {/* fetch and add player */}
+      <AddPlayerBottomSheet/>
     </Layout>
   );
 };
