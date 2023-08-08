@@ -3,7 +3,7 @@ import React from 'react';
 import {TeamData} from './TeamsList';
 
 type Props = {
-  teamData?: TeamData;
+  teamData: TeamData;
 };
 
 const TeamItem = ({teamData}: Props) => {

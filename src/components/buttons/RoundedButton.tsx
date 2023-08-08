@@ -21,12 +21,13 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     backgroundColor: '#081785',
-    marginHorizontal: 100
+    marginHorizontal: 100,
   },
   title: {
     color: '#fff',
     fontFamily:'comforta',
     textAlign: 'center',
-    fontSize: 18
+    fontSize: 18,
+
   },
 });

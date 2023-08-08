@@ -1,6 +1,7 @@
 import {FlatList, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import TeamItem from './TeamItem';
+import TeamEmptyList from './TeamEmptyList';
 
 /**
  * Item type for created teams
@@ -18,11 +19,12 @@ const data: TeamData[] = [
 
 const TeamsList = () => {
   return (
-    <View style={{flexDirection:'column', justifyContent:'flex-start'}}>
+    <View style={{flexDirection: 'column', justifyContent: 'flex-start'}}>
       <FlatList
         data={data}
         horizontal
         renderItem={({item}) => <TeamItem teamData={item} />}
+        ListEmptyComponent={<TeamEmptyList />}
       />
     </View>
   );

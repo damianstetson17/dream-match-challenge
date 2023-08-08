@@ -13,37 +13,11 @@ const Welcome = () => {
       <View style={styles.container}>
         <View style={{backgroundColor: '#081785'}}>
           {/* title */}
-          <Text
-            style={{
-              color: 'white',
-              fontSize: 50,
-              fontFamily: 'comforta-bold',
-              marginLeft: 10,
-              marginTop: 25,
-              marginBottom: 25,
-            }}>
-            My Dream Team
-          </Text>
+          <Text style={styles.title}>My Dream Team</Text>
 
           {/* cicle figure */}
-          <LinearGradient
-            colors={['#1F5AE2', '#081785']}
-            style={{
-              borderRadius: 350,
-              height: 450,
-              width: 450,
-              zIndex: -1,
-              position: 'absolute',
-              top: 20,
-              left: 80,
-              justifyContent: 'flex-end',
-            }}>
-            <View
-              style={{
-                position: 'absolute',
-                top: 10,
-                right: 100,
-              }}>
+          <LinearGradient colors={['#1F5AE2', '#081785']} style={styles.circle}>
+            <View style={styles.footballPlayer}>
               <Image
                 style={[{height: 500, width: 500}]}
                 source={require('../../assets/images/player_kick.png')}
@@ -53,18 +27,9 @@ const Welcome = () => {
           </LinearGradient>
         </View>
 
-        {/* welcome button panel */}
+        {/* welcome bottom button */}
         <View style={{marginVertical: 70, marginHorizontal: 20}}>
-          <Text
-            style={{
-              color: 'white',
-              fontSize: 40,
-              fontFamily: 'comforta',
-              textAlign: 'center',
-              marginBottom: 45,
-            }}>
-            Bienvenido
-          </Text>
+          <Text style={styles.subtitle}>Bienvenido</Text>
           <RoundedButton
             title="Comenzar"
             onPress={() => navigation.navigate('home', {})}
@@ -82,16 +47,34 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
   },
+  circle: {
+    borderRadius: 350,
+    height: 450,
+    width: 450,
+    zIndex: -1,
+    position: 'absolute',
+    top: 20,
+    left: 80,
+    justifyContent: 'flex-end',
+  },
+  footballPlayer: {
+    position: 'absolute',
+    top: 10,
+    right: 100,
+  },
   title: {
-    fontSize: 40,
-    color: '#fff',
-    textAlign: 'left',
-    fontWeight: 'bold',
+    color: 'white',
+    fontSize: 50,
+    fontFamily: 'comforta-bold',
+    marginLeft: 10,
+    marginTop: 25,
+    marginBottom: 25,
   },
   subtitle: {
-    fontSize: 25,
-    color: '#fff',
-    textAlign: 'left',
-    fontWeight: 'bold',
+    color: 'white',
+    fontSize: 40,
+    fontFamily: 'comforta',
+    textAlign: 'center',
+    marginBottom: 45,
   },
 });
