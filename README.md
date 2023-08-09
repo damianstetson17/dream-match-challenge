@@ -2,6 +2,8 @@
 
 # Challenge Técnico Dream Match 📱
 
+ 🤓 Hecho con React Native: **v0.72.3** y Node.js: **v18.17.0**
+
 >¿Alguna vez soñaste con ver un partido de fútbol en donde se enfrenten tus jugadores
 favoritos? Imaginate poder armar dos equipos de 5 jugadores cada uno, en donde no
 tengas ninguna limitación... posición, presupuesto, contrato, club, edad... tu mente es tu
