@@ -6,13 +6,14 @@ type Props = {
   message?: string;
   show: boolean;
   onConfirmPressed?: () => void;
+  onDismiss?: () => void;
   setShow: React.Dispatch<SetStateAction<boolean>>;
 };
 
 /**
  * Ok popup base, just have Confirm button
  */
-const OkPopup = ({title, message, show, onConfirmPressed, setShow}: Props) => {
+const OkPopup = ({title, message, show, onConfirmPressed, onDismiss, setShow}: Props) => {
   return (
     <AwesomeAlert
       show={show}

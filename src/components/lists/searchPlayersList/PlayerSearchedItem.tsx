@@ -1,20 +1,49 @@
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {PlayerData} from '../../../types';
-import {useAppDispatch} from '../../../store/store';
-import {deletePlayer} from '../../../store/slices/teamSlice';
+import {useAppDispatch, useAppSelector} from '../../../store/store';
+import {addPlayer} from '../../../store/slices/teamSlice';
 import {convertDateFormat} from '../../../utils/dateFormater';
 
 type Props = {
   playerData: PlayerData;
 };
 
-const PlayerItem = ({playerData}: Props) => {
-  const dispatch = useAppDispatch();
+const PlayerSearchedItem = ({playerData}: Props) => {
+  const teamSelectedPlayers = useAppSelector(
+    state => state.teams.teamSelected?.players,
+  );
+  const teams = useAppSelector(state => state.teams.teams);
 
-  //delete player from selected team state
-  const deletePlayerInSelectedTeam = () => {
-    dispatch(deletePlayer(playerData.player_name));
+  const dispatch = useAppDispatch();
+  const [disable, setDisable] = useState(false);
+
+  useEffect(() => {
+    setDisable(isPlayerHire());
+  }, [teamSelectedPlayers]);
+
+  //verify if the player is corrently hired in any team
+  const isPlayerHire = () => {
+    let result = false;
+
+    //if player is already hired in current team
+    if (teamSelectedPlayers) result = teamSelectedPlayers.includes(playerData);
+
+    //if player is already hired in any team
+    teams.map(t => {
+      if (t.players) {
+        if (t.players.find(p => p.player_name === playerData.player_name)) {
+          result = true;
+        }
+      }
+    });
+
+    return result;
+  };
+
+  //add player from selected team state
+  const addPlayerInSelectedTeam = () => {
+    dispatch(addPlayer(playerData));
   };
 
   return (
@@ -53,22 +82,26 @@ const PlayerItem = ({playerData}: Props) => {
             <Text style={styles.team}> - </Text>
           )}
           {/* player team */}
-          <Text style={styles.team} numberOfLines={1}>
+          <Text style={styles.team} numberOfLines={1} >
             {playerData.team_name}
           </Text>
         </View>
       </View>
 
-      {/* delete action */}
+      {/* hire action */}
       <View style={styles.actionContainer}>
         <TouchableOpacity
-          onPress={() => deletePlayerInSelectedTeam()}
-          style={styles.deleteBtn}>
+          onPress={() => addPlayerInSelectedTeam()}
+          disabled={disable}
+          style={[
+            styles.hireBtn,
+            {backgroundColor: disable ? 'gray' : '#357a38'},
+          ]}>
           <Image
-            source={require('../../../../assets/icons/delete.png')}
+            source={require('../../../../assets/icons/hire.jpg')}
             style={{
-              width: 26,
-              height: 26,
+              width: 40,
+              height: 40,
             }}
           />
         </TouchableOpacity>
@@ -77,10 +110,11 @@ const PlayerItem = ({playerData}: Props) => {
   );
 };
 
-export default PlayerItem;
+export default PlayerSearchedItem;
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     flexDirection: 'row',
     margin: 10,
     justifyContent: 'space-between',
@@ -88,23 +122,23 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: 'white',
+    color: 'black',
   },
   team: {
     fontSize: 20,
-    color: 'white',
+    color: 'black',
   },
   actionContainer: {
     justifyContent: 'center',
     alignItems: 'center',
   },
-  deleteBtn: {
+  hireBtn: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: 25,
-    height: 25,
-    borderRadius: 15,
+    paddingRight: 14,
+    width: 55,
+    height: 55,
+    borderRadius: 10,
     padding: 20,
-    backgroundColor: '#f44336',
   },
 });

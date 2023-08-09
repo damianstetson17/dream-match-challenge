@@ -15,7 +15,7 @@ export type PlayerData = {
   player_image: string;
   player_name: string;
   player_number: string;
-  player_age: string;
+  player_birthdate: string;
   team_name: string;
 };
 

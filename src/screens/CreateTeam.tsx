@@ -7,7 +7,7 @@ import PlayersList from '../components/lists/playersList/PlayersList';
 import {useNavigation, NavigationProp} from '@react-navigation/native';
 import AddPlayerBottomSheet from '../components/bottomsheets/AddPlayerBottomSheet';
 import {useAppDispatch, useAppSelector} from '../store/store';
-import {addNewTeam, updateTeam} from '../store/slices/teamSlice';
+import {addNewTeam, resetData, updateTeam} from '../store/slices/teamSlice';
 import {Team} from '../types';
 import ConfirmPopup from '../components/popups/ConfirmPopup';
 import OkPopup from '../components/popups/OkPopup';
@@ -36,6 +36,7 @@ const CreateTeam = () => {
 
   //handle bottom sheet visibility
   const handleAddPlayer = () => {
+    dispatch(resetData())
     setVisibility(!visibility);
   };
 

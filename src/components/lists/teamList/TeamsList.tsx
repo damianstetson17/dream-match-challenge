@@ -1,4 +1,4 @@
-import {FlatList, StyleSheet, Text} from 'react-native';
+import {FlatList, Image, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import TeamItem from './TeamItem';
 import TeamEmptyList from './TeamEmptyList';
@@ -14,6 +14,14 @@ const TeamsList = () => {
         horizontal
         renderItem={({item}) => <TeamItem teamData={item} />}
         ListEmptyComponent={<TeamEmptyList />}
+        ItemSeparatorComponent={() => (
+          <View style={{marginHorizontal: 1}}>
+            <Image
+            source={require('../../../../assets/icons/versus.png')}
+            style={{width: 40, height: 40}}
+          />
+          </View>
+        )}
       />
       {
         //show max team length if exists at least one team

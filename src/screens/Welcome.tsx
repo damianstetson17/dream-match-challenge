@@ -13,7 +13,7 @@ const Welcome = () => {
       <View style={styles.container}>
         <View style={{backgroundColor: '#081785'}}>
           {/* title */}
-          <Text style={styles.title}>My Dream Team</Text>
+          <Text style={styles.title}>Dream Match</Text>
 
           {/* cicle figure */}
           <LinearGradient colors={['#1F5AE2', '#081785']} style={styles.circle}>

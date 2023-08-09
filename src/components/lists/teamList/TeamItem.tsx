@@ -98,7 +98,6 @@ export default TeamItem;
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 10,
     padding: 10,
     borderColor: 'black',
     borderWidth: 0.5,
@@ -125,8 +124,8 @@ const styles = StyleSheet.create({
   footballImg: {
     alignItems: 'center',
     position: 'absolute',
-    top: 45,
-    right: -40,
+    top: 30,
+    right: -30,
   },
   teamName: {
     color: 'white',

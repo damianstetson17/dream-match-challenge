@@ -1,9 +1,16 @@
-import React, {SetStateAction, useEffect, useMemo, useRef} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import React, {
+  SetStateAction,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+import {View, Text, StyleSheet, ActivityIndicator} from 'react-native';
 import {BottomSheetModal, BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 import {TextInput} from 'react-native-gesture-handler';
-import PlayerCard from '../cards/PlayerCard';
-import ActionButton from '../buttons/ActionButton';
+import {useAppDispatch, useAppSelector} from '../../store/store';
+import {fetchPlayerData} from '../../store/slices/teamSlice';
+import SearchList from '../lists/searchPlayersList/SearchList';
 
 const player = {
   player_image:
@@ -20,8 +27,22 @@ type Props = {
 };
 
 const AddPlayerBottomSheet = ({visibility, setVisibility}: Props) => {
+  const playersInCurrentTeam = useAppSelector(
+    state => state.teams.teamSelected?.players,
+  );
+  const loading = useAppSelector(state => state.teams.loading);
+  const dispatch = useAppDispatch();
+
   const bottomSheetRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['10%', '85%'], []);
+
+  const [playerName, setPlayerName] = useState('');
+
+  useEffect(() => {
+    if (playersInCurrentTeam?.length === 5) {
+      setVisibility(false);
+    }
+  }, [playersInCurrentTeam]);
 
   //handling bottomsheet visibility
   useEffect(() => {
@@ -33,6 +54,11 @@ const AddPlayerBottomSheet = ({visibility, setVisibility}: Props) => {
     setVisibility(false);
   };
 
+  const handleFetchedPlayers = () => {
+    if (playerName.length > 1) {
+      dispatch(fetchPlayerData(playerName));
+    }
+  };
   return (
     <BottomSheetModalProvider>
       <BottomSheetModal
@@ -51,25 +77,25 @@ const AddPlayerBottomSheet = ({visibility, setVisibility}: Props) => {
               style={{color: 'white', fontSize: 20}}
               placeholderTextColor="white"
               caretHidden={false}
+              onChangeText={name => setPlayerName(name)}
+              onEndEditing={() => handleFetchedPlayers()}
             />
           </View>
 
           {/* player fetch */}
           <View
             style={{
-              justifyContent: 'center',
-              alignItems: 'center',
               flex: 1,
             }}>
-            <PlayerCard playerData={player} />
-
-            <View style={{margin: 25}}>
-              <ActionButton
-                title="Agregar al equipo"
-                onPress={handleAddPlayer}
-                bgColor="#357a38"
-              />
-            </View>
+            {loading ? (
+              <View style={styles.activIndicatorContainer}>
+                <ActivityIndicator color={'#181828'} size={60} />
+              </View>
+            ) : (
+              <View>
+                <SearchList />
+              </View>
+            )}
           </View>
         </View>
       </BottomSheetModal>
@@ -89,13 +115,12 @@ const styles = StyleSheet.create({
     color: '#181828',
     fontSize: 30,
     fontFamily: 'comforta',
-    marginTop: 10,
   },
   subTitle: {
     color: '#181828',
     fontSize: 25,
-    marginTop: 20,
-    marginBottom: 10,
+    marginTop: 10,
+    marginBottom: 5,
     fontFamily: 'comforta',
     textAlignVertical: 'center',
   },
@@ -103,5 +128,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#181828',
     borderRadius: 15,
     paddingHorizontal: 10,
+    marginBottom: 10,
+  },
+  activIndicatorContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
   },
 });
