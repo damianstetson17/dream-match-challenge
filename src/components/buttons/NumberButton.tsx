@@ -5,16 +5,14 @@ type Props = {
   value: number;
   setValue: React.Dispatch<SetStateAction<number>>;
   selected?: boolean;
+  bgColor: string;
 };
 
-const NumberButton = ({value, setValue, selected = false}: Props) => {
+const NumberButton = ({value, setValue, bgColor, selected = false}: Props) => {
   return (
     <TouchableOpacity
       onPress={() => setValue(value)}
-      style={[
-        styles.container,
-        {backgroundColor: selected ? '#1769aa' : 'gray'},
-      ]}>
+      style={[styles.container, {backgroundColor: selected ? bgColor : 'gray'}]}>
       <Text style={styles.title}>#{value}</Text>
     </TouchableOpacity>
   );

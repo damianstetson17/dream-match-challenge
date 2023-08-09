@@ -1,4 +1,4 @@
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Image, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import Layout from '../components/_Layout';
 import {useNavigation, NavigationProp} from '@react-navigation/native';
@@ -6,18 +6,23 @@ import TeamsList from '../components/lists/teamList/TeamsList';
 import HomeBanner from '../components/banners/HomeBanner';
 import LinearGradient from 'react-native-linear-gradient';
 import ActionButton from '../components/buttons/ActionButton';
-import { useAppDispatch } from '../store/store';
-import { setTeamSelected } from '../store/slices/teamSlice';
+import {useAppDispatch, useAppSelector} from '../store/store';
+import {setTeamSelected} from '../store/slices/teamSlice';
 
 const Home = () => {
   const navigation = useNavigation<NavigationProp<any>>();
+  const createdTeams = useAppSelector(state => state.teams.teams);
   const dispatch = useAppDispatch();
 
   //go to create team screen and set in null selected state (bcs is new)
   const handleGotToCreateTeam = () => {
-    navigation.navigate('createTeam', {})
-    dispatch(setTeamSelected(null));
-  }
+    if (createdTeams.length < 2) {
+      dispatch(setTeamSelected(null));
+      navigation.navigate('createTeam', {});
+    } else {
+      //show popup
+    }
+  };
 
   return (
     <Layout>
@@ -29,10 +34,7 @@ const Home = () => {
         <HomeBanner />
 
         {/* create team button */}
-        <ActionButton
-          title="Crear un Equipo"
-          onPress={handleGotToCreateTeam}
-        />
+        <ActionButton title="Crear un Equipo" onPress={handleGotToCreateTeam} />
 
         {/* circle */}
         <LinearGradient colors={['#1F5AE2', '#081785']} style={styles.circle}>
@@ -46,7 +48,7 @@ const Home = () => {
 
         {/* team list */}
         <View style={styles.teamContainer}>
-          <Text style={styles.subtitle}>Equipos creados</Text>
+          <Text style={styles.subtitle}>Equipos formados</Text>
           <View style={{alignItems: 'center'}}>
             <TeamsList />
           </View>

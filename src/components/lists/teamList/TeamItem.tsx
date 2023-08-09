@@ -26,29 +26,11 @@ const TeamItem = ({teamData}: Props) => {
     <TouchableOpacity
       onPress={handleGoToEdit}
       style={[
-        {
-          marginHorizontal: 10,
-          padding: 10,
-          borderColor: 'black',
-          borderWidth: 0.5,
-          borderRadius: 15,
-          height: 150,
-          width: 150,
-          justifyContent: 'center',
-          alignItems: 'center',
-        },
+        styles.container,
         {backgroundColor: teamData?.number === 1 ? '#9B1239' : '#308B39'},
       ]}>
       {/* delete btn */}
-      <TouchableOpacity
-        onPress={handleDeleteTeam}
-        style={{
-          alignSelf: 'flex-end',
-          position: 'absolute',
-          top: 7,
-          right: 7,
-          padding: 2,
-        }}>
+      <TouchableOpacity onPress={handleDeleteTeam} style={styles.deleteBtn}>
         <Image
           style={[{height: 16, width: 16}]}
           source={require('../../../../assets/icons/delete_team.png')}
@@ -56,14 +38,7 @@ const TeamItem = ({teamData}: Props) => {
       </TouchableOpacity>
 
       {/* team icon img */}
-      <View
-        style={{
-          alignItems: 'center',
-          marginBottom: 5,
-          backgroundColor: '#b0b0b0',
-          borderRadius: 50,
-          padding: 5,
-        }}>
+      <View style={styles.teamIcon}>
         <Image
           style={[{height: 45, width: 45}]}
           source={require('../../../../assets/icons/club.png')}
@@ -71,25 +46,68 @@ const TeamItem = ({teamData}: Props) => {
       </View>
 
       {/* football img */}
-      <View
-        style={{
-          alignItems: 'center',
-          position: 'absolute',
-          top: 45,
-          right: -40,
-        }}>
+      <View style={styles.footballImg}>
         <Image
           style={[{height: 80, width: 80}]}
           source={require('../../../../assets/images/ball.png')}
         />
       </View>
-      <Text style={{color: 'white', fontSize: 20, textAlign: 'left'}}>
-        {teamData?.name}
-      </Text>
+      <Text style={styles.teamName}>{teamData?.name}</Text>
+
+      {/* team details (formed, complete or incomplete) */}
+      <View style={{alignItems: 'center'}}>
+        <Text style={styles.formed}>Formado</Text>
+        {teamData?.players.length === 5 ? (
+          <Text style={styles.complete}>Completo</Text>
+        ) : (
+          <Text style={styles.incomplete}>Incompleto</Text>
+        )}
+      </View>
     </TouchableOpacity>
   );
 };
 
 export default TeamItem;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    marginHorizontal: 10,
+    padding: 10,
+    borderColor: 'black',
+    borderWidth: 0.5,
+    borderRadius: 15,
+    height: 180,
+    width: 160,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  deleteBtn: {
+    alignSelf: 'flex-end',
+    position: 'absolute',
+    top: 7,
+    right: 7,
+    padding: 2,
+  },
+  teamIcon: {
+    alignItems: 'center',
+    marginBottom: 5,
+    backgroundColor: '#b0b0b0',
+    borderRadius: 50,
+    padding: 5,
+  },
+  footballImg: {
+    alignItems: 'center',
+    position: 'absolute',
+    top: 45,
+    right: -40,
+  },
+  teamName: {
+    color: 'white',
+    fontSize: 20,
+    marginHorizontal: 10,
+    textAlign: 'center',
+  },
+  formed: {fontFamily: 'comfortaBold', color: '#91ff35'},
+  complete: {fontFamily: 'comfortaBold', color: '#91ff35'},
+  incomplete: {fontFamily: 'comfortaBold', color: '#ff9100'},
+});

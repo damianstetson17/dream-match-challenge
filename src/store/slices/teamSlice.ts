@@ -18,7 +18,39 @@ const initialState: TeamSlice = {
         {
           player_image:
             'https://apiv3.apifootball.com/badges/players/9898_k-benzema.jpg',
-          player_name: 'K. Benzema',
+          player_name: 'K. Benzema 1',
+          player_number: '9',
+          player_age: '35',
+          team_name: 'Real Madrid',
+        },
+        {
+          player_image:
+            'https://apiv3.apifootball.com/badges/players/9898_k-benzema.jpg',
+          player_name: 'K. Benzema 2',
+          player_number: '9',
+          player_age: '35',
+          team_name: 'Real Madrid',
+        },
+        {
+          player_image:
+            'https://apiv3.apifootball.com/badges/players/9898_k-benzema.jpg',
+          player_name: 'K. Benzema 3',
+          player_number: '9',
+          player_age: '35',
+          team_name: 'Real Madrid',
+        },
+        {
+          player_image:
+            'https://apiv3.apifootball.com/badges/players/9898_k-benzema.jpg',
+          player_name: 'K. Benzema 4',
+          player_number: '9',
+          player_age: '35',
+          team_name: 'Real Madrid',
+        },
+        {
+          player_image:
+            'https://apiv3.apifootball.com/badges/players/9898_k-benzema.jpg',
+          player_name: 'K. Benzema 5',
           player_number: '9',
           player_age: '35',
           team_name: 'Real Madrid',

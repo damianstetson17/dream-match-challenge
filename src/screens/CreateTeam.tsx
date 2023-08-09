@@ -96,7 +96,7 @@ const CreateTeam = () => {
               placeholder=". . ."
               value={teamNewName}
               onChangeText={newName => setTeamNewName(newName)}
-              maxLength={30}
+              maxLength={20}
               style={{color: 'white', fontSize: 20}}
               placeholderTextColor="white"
             />
@@ -105,14 +105,21 @@ const CreateTeam = () => {
 
         {/* number radio button */}
         <View style={styles.btnsTeamContainer}>
-          <Text style={styles.subTitle}>Equipo número</Text>
+          <View>
+            <Text style={styles.subTitle}>Equipo número</Text>
+            <Text style={[styles.subTitle, {fontSize: 15}]}>
+              (Color del equipo)
+            </Text>
+          </View>
           <NumberButton
             value={1}
+            bgColor="#9B1239"
             setValue={setTeamNewNumber}
             selected={teamNewNumber === 1}
           />
           <NumberButton
             value={2}
+            bgColor="#308B39"
             setValue={setTeamNewNumber}
             selected={teamNewNumber === 2}
           />
