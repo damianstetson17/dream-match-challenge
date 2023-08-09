@@ -8,6 +8,10 @@
 favoritos? Imaginate poder armar dos equipos de 5 jugadores cada uno, en donde no
 tengas ninguna limitación... posición, presupuesto, contrato, club, edad... tu mente es tu
 límite.
+>
+<p align="center">
+ <img src="https://github.com/damianstetson17/Dream-Match-Challenge/blob/master/assets/demo/dream_marcth_demo.gif"/>
+</p>
 
 ## Funcionalidades implementadas ⚙️
 
