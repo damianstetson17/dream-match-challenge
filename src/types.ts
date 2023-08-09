@@ -19,6 +19,9 @@ export type PlayerData = {
   team_name: string;
 };
 
+/**
+ * UpdateTeamPayloadType payload for updating team reducer
+ */
 export type UpdateTeamPayloadType = {
   oldName: string;
   newTeamValues: Team;
