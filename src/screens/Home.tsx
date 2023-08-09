@@ -1,6 +1,6 @@
 import {Image, StyleSheet, Text, View} from 'react-native';
 import React, {useState} from 'react';
-import Layout from '../components/_Layout';
+import Layout from './_Layout';
 import {useNavigation, NavigationProp} from '@react-navigation/native';
 import TeamsList from '../components/lists/teamList/TeamsList';
 import HomeBanner from '../components/banners/HomeBanner';

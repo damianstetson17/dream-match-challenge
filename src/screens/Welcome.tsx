@@ -1,6 +1,6 @@
 import {Image, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import Layout from '../components/_Layout';
+import Layout from './_Layout';
 import RoundedButton from '../components/buttons/RoundedButton';
 import {useNavigation, NavigationProp} from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';

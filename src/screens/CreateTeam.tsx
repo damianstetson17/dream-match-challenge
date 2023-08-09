@@ -1,6 +1,6 @@
 import {Image, StyleSheet, Text, TextInput, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import Layout from '../components/_Layout';
+import Layout from './_Layout';
 import NumberButton from '../components/buttons/NumberButton';
 import ActionButton from '../components/buttons/ActionButton';
 import PlayersList from '../components/lists/playersList/PlayersList';
