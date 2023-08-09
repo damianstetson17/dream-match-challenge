@@ -7,16 +7,17 @@ import PlayersList from '../components/lists/playersList/PlayersList';
 import {useNavigation, NavigationProp} from '@react-navigation/native';
 import AddPlayerBottomSheet from '../components/bottomsheets/AddPlayerBottomSheet';
 import {useAppDispatch, useAppSelector} from '../store/store';
-import {
-  addNewTeam,
-  setTeamSelected,
-  updateTeam,
-} from '../store/slices/teamSlice';
+import {addNewTeam, updateTeam} from '../store/slices/teamSlice';
 import {Team} from '../types';
+import ConfirmPopup from '../components/popups/ConfirmPopup';
+import OkPopup from '../components/popups/OkPopup';
 
 const CreateTeam = () => {
   const navigation = useNavigation<NavigationProp<any>>();
   const dispatch = useAppDispatch();
+
+  const [showSavePopup, setShowSavePopup] = useState(false);
+  const [showErrorPopup, setShowErrorPopup] = useState(false);
 
   const [visibility, setVisibility] = useState(false);
   const teamSelected = useAppSelector(state => state.teams.teamSelected);
@@ -39,6 +40,13 @@ const CreateTeam = () => {
   };
 
   const handleAddTeam = () => {
+    //show error if team name is empty
+    if (teamNewName.length === 0) {
+      setShowErrorPopup(true);
+      setShowSavePopup(false);
+      return;
+    }
+
     //if exists an old name, is a team update
     if (oldNameTeamSelected && teamSelected) {
       const updatedTeam: Team = {
@@ -146,10 +154,29 @@ const CreateTeam = () => {
             title="Guardar"
             bgColor="#357a38"
             width={100}
-            onPress={handleAddTeam}
+            onPress={() => setShowSavePopup(true)}
           />
         </View>
       </View>
+
+      {/* save popup confirmation */}
+      <ConfirmPopup
+        title="¿Guardar Equipo?"
+        message="Podrás editarlo desde la página principal"
+        show={showSavePopup}
+        setShow={setShowSavePopup}
+        onConfirmPressed={handleAddTeam}
+        onCancelPressed={() => setShowSavePopup(false)}
+      />
+
+      {/* name lenght restriction popup */}
+      <OkPopup
+        title="Error en nombre del equipo"
+        message="El nombre del equipo no puede estar vacío"
+        show={showErrorPopup}
+        setShow={setShowErrorPopup}
+        onConfirmPressed={() => setShowErrorPopup(false)}
+      />
 
       {/* fetch and add player */}
       <AddPlayerBottomSheet

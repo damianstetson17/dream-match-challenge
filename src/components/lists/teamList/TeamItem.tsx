@@ -1,9 +1,10 @@
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {Team} from '../../../types';
 import {useAppDispatch} from '../../../store/store';
 import {deleteTeam, setTeamSelected} from '../../../store/slices/teamSlice';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
+import ConfirmPopup from '../../popups/ConfirmPopup';
 
 type Props = {
   teamData: Team;
@@ -13,7 +14,10 @@ const TeamItem = ({teamData}: Props) => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<NavigationProp<any>>();
 
+  const [showPopup, setShowPopup] = useState(false);
+
   const handleDeleteTeam = () => {
+    setShowPopup(false);
     dispatch(deleteTeam(teamData.name));
   };
 
@@ -30,7 +34,9 @@ const TeamItem = ({teamData}: Props) => {
         {backgroundColor: teamData?.number === 1 ? '#9B1239' : '#308B39'},
       ]}>
       {/* delete btn */}
-      <TouchableOpacity onPress={handleDeleteTeam} style={styles.deleteBtn}>
+      <TouchableOpacity
+        onPress={() => setShowPopup(true)}
+        style={styles.deleteBtn}>
         <Image
           style={[{height: 16, width: 16}]}
           source={require('../../../../assets/icons/delete_team.png')}
@@ -52,17 +58,38 @@ const TeamItem = ({teamData}: Props) => {
           source={require('../../../../assets/images/ball.png')}
         />
       </View>
-      <Text style={styles.teamName}>{teamData?.name}</Text>
+
+      {/* team name */}
+      <Text style={styles.teamName}>
+        {teamData?.name?.length > 0 ? (
+          teamData?.name
+        ) : (
+          <Text style={styles.teamName}>. . .</Text>
+        )}
+      </Text>
 
       {/* team details (formed, complete or incomplete) */}
       <View style={{alignItems: 'center'}}>
         <Text style={styles.formed}>Formado</Text>
-        {teamData?.players.length === 5 ? (
-          <Text style={styles.complete}>Completo</Text>
-        ) : (
-          <Text style={styles.incomplete}>Incompleto</Text>
-        )}
+        {
+          //team complete
+          teamData?.players.length === 5 ? (
+            <Text style={styles.complete}>Completo</Text>
+          ) : (
+            <Text style={styles.incomplete}>Incompleto</Text>
+          )
+        }
       </View>
+
+      {/* team limit popup */}
+      <ConfirmPopup
+        title="Borrar Equipo"
+        message="¿Estás seguro que deseas borrar el equipo? Se perderán todos sus datos cargados"
+        show={showPopup}
+        setShow={setShowPopup}
+        onConfirmPressed={handleDeleteTeam}
+        onCancelPressed={() => setShowPopup(false)}
+      />
     </TouchableOpacity>
   );
 };

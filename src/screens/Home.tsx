@@ -1,5 +1,5 @@
 import {Image, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import Layout from '../components/_Layout';
 import {useNavigation, NavigationProp} from '@react-navigation/native';
 import TeamsList from '../components/lists/teamList/TeamsList';
@@ -8,11 +8,14 @@ import LinearGradient from 'react-native-linear-gradient';
 import ActionButton from '../components/buttons/ActionButton';
 import {useAppDispatch, useAppSelector} from '../store/store';
 import {setTeamSelected} from '../store/slices/teamSlice';
+import OkPopup from '../components/popups/OkPopup';
 
 const Home = () => {
   const navigation = useNavigation<NavigationProp<any>>();
   const createdTeams = useAppSelector(state => state.teams.teams);
   const dispatch = useAppDispatch();
+
+  const [showPopup, setShowPopup] = useState(false);
 
   //go to create team screen and set in null selected state (bcs is new)
   const handleGotToCreateTeam = () => {
@@ -20,7 +23,7 @@ const Home = () => {
       dispatch(setTeamSelected(null));
       navigation.navigate('createTeam', {});
     } else {
-      //show popup
+      setShowPopup(true);
     }
   };
 
@@ -54,6 +57,15 @@ const Home = () => {
           </View>
         </View>
       </View>
+
+      {/* team limit popup */}
+      <OkPopup
+        title="Limite de equipos alcanzado"
+        message="Solo puedes tener hasta dos equipos creados, elimina uno y vuelve a intentarlo"
+        show={showPopup}
+        setShow={setShowPopup}
+        onConfirmPressed={() => setShowPopup(false)}
+      />
     </Layout>
   );
 };
