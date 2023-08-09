@@ -28,7 +28,7 @@ límite.
 6. Se entiende como equipo formado a un equipo creado y nombrado.
 ## ¿Cómo hacer funcionar este proyecto? 🚀
 
->Este proyecto cuanta con el consumo de un servicio de API, específicamente [API Football](https://apifootball.com/documentation/) del cual tendrás que registrarte y conseguir tu **FOOTBALL_API_KEY** que deberás colocar en un archivo **.env** en **la carpeta raíz del proyecto**.
+>Este proyecto cuanta con el consumo de un servicio de API, específicamente [API Football](https://apifootball.com/documentation/) del cual tendrás que registrarte y conseguir tu **FOOTBALL_API_KEY** que deberás colocar en un archivo **.env** en **la carpeta raíz del proyecto** ( Dream-Match-Challenge/.env 👈)
  <br></br>*( Si eres un evaluador del challenge, este archivo .env lo encontrarás adjunto al email 😉 )*
 
 ```bash
