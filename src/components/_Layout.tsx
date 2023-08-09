@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {StatusBar, StyleSheet} from 'react-native';
 import React, {ReactNode} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
@@ -7,7 +7,12 @@ type Props = {
 };
 
 const Layout = ({children}: Props) => {
-  return <SafeAreaView style={styles.container}>{children}</SafeAreaView>;
+  return (
+    <SafeAreaView style={styles.container}>
+      <StatusBar backgroundColor={'#181828'} />
+      {children}
+    </SafeAreaView>
+  );
 };
 
 export default Layout;
