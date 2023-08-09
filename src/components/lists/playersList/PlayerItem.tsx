@@ -6,13 +6,23 @@ import {
   View,
 } from 'react-native';
 import React from 'react';
-import {PlayerData} from './PlayersList';
+import { PlayerData } from '../../../types';
+import { useAppDispatch } from '../../../store/store';
+import { deletePlayer } from '../../../store/slices/teamSlice';
 
 type Props = {
   playerData: PlayerData;
 };
 
 const PlayerItem = ({playerData}: Props) => {
+
+  const dispatch = useAppDispatch();
+
+  //delete player from selected team state
+  const deletePlayerInSelectedTeam = () => {
+    dispatch(deletePlayer(playerData.player_name))
+  };
+
   return (
     <View style={styles.container}>
       {/* player photo */}
@@ -35,7 +45,7 @@ const PlayerItem = ({playerData}: Props) => {
 
       {/* delete action */}
       <View style={styles.actionContainer}>
-        <TouchableOpacity style={styles.deleteBtn}>
+        <TouchableOpacity onPress={() => deletePlayerInSelectedTeam()} style={styles.deleteBtn}>
           <Image
             source={require('../../../../assets/icons/delete.png')}
             style={{

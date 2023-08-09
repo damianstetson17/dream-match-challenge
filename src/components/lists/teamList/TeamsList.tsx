@@ -1,35 +1,40 @@
-import {FlatList, StyleSheet, Text, View} from 'react-native';
+import {FlatList, StyleSheet, Text} from 'react-native';
 import React from 'react';
 import TeamItem from './TeamItem';
 import TeamEmptyList from './TeamEmptyList';
-
-/**
- * Item type for created teams
- */
-export type TeamData = {
-  id: number;
-  name: string;
-  color: string;
-};
-
-const data: TeamData[] = [
-  {id: 0, name: 'Los super pibes', color: '#9B1239'},
-  {id: 1, name: 'Los come choripanes', color: '#308B39'},
-];
+import {useAppSelector} from '../../../store/store';
 
 const TeamsList = () => {
+  const createdTeams = useAppSelector(state => state.teams.teams);
+
   return (
-    <View style={{flexDirection: 'column', justifyContent: 'flex-start'}}>
+    <>
       <FlatList
-        data={data}
+        data={createdTeams}
         horizontal
         renderItem={({item}) => <TeamItem teamData={item} />}
         ListEmptyComponent={<TeamEmptyList />}
       />
-    </View>
+      {
+        //show max team length if exists at least one team
+        createdTeams.length > 0 && (
+          <Text style={styles.footerLength}>
+            Tienes {createdTeams.length} de 2 equipos creados
+          </Text>
+        )
+      }
+    </>
   );
 };
 
 export default TeamsList;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  footerLength: {
+    color: 'white',
+    fontSize: 15,
+    marginTop: 10,
+    fontFamily: 'comforta',
+    textAlignVertical: 'center',
+  },
+});

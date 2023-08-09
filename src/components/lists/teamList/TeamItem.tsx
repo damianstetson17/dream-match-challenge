@@ -1,14 +1,30 @@
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
-import {TeamData} from './TeamsList';
+import {Team} from '../../../types';
+import {useAppDispatch} from '../../../store/store';
+import {deleteTeam, setTeamSelected} from '../../../store/slices/teamSlice';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 
 type Props = {
-  teamData: TeamData;
+  teamData: Team;
 };
 
 const TeamItem = ({teamData}: Props) => {
+  const dispatch = useAppDispatch();
+  const navigation = useNavigation<NavigationProp<any>>();
+
+  const handleDeleteTeam = () => {
+    dispatch(deleteTeam(teamData.name));
+  };
+
+  const handleGoToEdit = () => {
+    dispatch(setTeamSelected(teamData));
+    navigation.navigate('createTeam', {});
+  };
+
   return (
     <TouchableOpacity
+      onPress={handleGoToEdit}
       style={[
         {
           marginHorizontal: 10,
@@ -21,10 +37,11 @@ const TeamItem = ({teamData}: Props) => {
           justifyContent: 'center',
           alignItems: 'center',
         },
-        {backgroundColor: teamData?.color},
+        {backgroundColor: teamData?.number === 1 ? '#9B1239' : '#308B39'},
       ]}>
       {/* delete btn */}
       <TouchableOpacity
+        onPress={handleDeleteTeam}
         style={{
           alignSelf: 'flex-end',
           position: 'absolute',
@@ -33,9 +50,9 @@ const TeamItem = ({teamData}: Props) => {
           padding: 2,
         }}>
         <Image
-        style={[{height: 16, width: 16}]}
-        source={require('../../../../assets/icons/delete_team.png')}
-      />
+          style={[{height: 16, width: 16}]}
+          source={require('../../../../assets/icons/delete_team.png')}
+        />
       </TouchableOpacity>
 
       {/* team icon img */}

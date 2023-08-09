@@ -1,17 +1,21 @@
 import {StyleSheet, Text, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, {SetStateAction} from 'react';
 
 type Props = {
-  title?: string;
-  value?: string;
-  onPress?: () => void;
+  value: number;
+  setValue: React.Dispatch<SetStateAction<number>>;
+  selected?: boolean;
 };
 
-const NumberButton = ({title, value, onPress}: Props) => {
-
+const NumberButton = ({value, setValue, selected = false}: Props) => {
   return (
-    <TouchableOpacity onPress={onPress} style={styles.conatiner}>
-      <Text style={styles.title}>{title}</Text>
+    <TouchableOpacity
+      onPress={() => setValue(value)}
+      style={[
+        styles.container,
+        {backgroundColor: selected ? '#1769aa' : 'gray'},
+      ]}>
+      <Text style={styles.title}>#{value}</Text>
     </TouchableOpacity>
   );
 };
@@ -19,8 +23,7 @@ const NumberButton = ({title, value, onPress}: Props) => {
 export default NumberButton;
 
 const styles = StyleSheet.create({
-  conatiner: {
-    backgroundColor: 'gray',
+  container: {
     borderRadius: 15,
     paddingHorizontal: 5,
     marginTop: 10,

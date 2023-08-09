@@ -6,9 +6,18 @@ import TeamsList from '../components/lists/teamList/TeamsList';
 import HomeBanner from '../components/banners/HomeBanner';
 import LinearGradient from 'react-native-linear-gradient';
 import ActionButton from '../components/buttons/ActionButton';
+import { useAppDispatch } from '../store/store';
+import { setTeamSelected } from '../store/slices/teamSlice';
 
 const Home = () => {
   const navigation = useNavigation<NavigationProp<any>>();
+  const dispatch = useAppDispatch();
+
+  //go to create team screen and set in null selected state (bcs is new)
+  const handleGotToCreateTeam = () => {
+    navigation.navigate('createTeam', {})
+    dispatch(setTeamSelected(null));
+  }
 
   return (
     <Layout>
@@ -22,7 +31,7 @@ const Home = () => {
         {/* create team button */}
         <ActionButton
           title="Crear un Equipo"
-          onPress={() => navigation.navigate('createTeam', {})}
+          onPress={handleGotToCreateTeam}
         />
 
         {/* circle */}

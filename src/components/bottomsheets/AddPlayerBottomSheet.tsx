@@ -1,10 +1,6 @@
-import React, {useMemo, useRef} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-} from 'react-native';
-import BottomSheet from '@gorhom/bottom-sheet';
+import React, {SetStateAction, useEffect, useMemo, useRef} from 'react';
+import {View, Text, StyleSheet} from 'react-native';
+import {BottomSheetModal, BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 import {TextInput} from 'react-native-gesture-handler';
 import PlayerCard from '../cards/PlayerCard';
 import ActionButton from '../buttons/ActionButton';
@@ -17,41 +13,67 @@ const player = {
   player_age: '35',
   team_name: 'Real Madrid',
 };
-const AddPlayerBottomSheet = () => {
-  const bottomSheetRef = useRef<BottomSheet>(null);
+
+type Props = {
+  visibility: boolean;
+  setVisibility: React.Dispatch<SetStateAction<boolean>>;
+};
+
+const AddPlayerBottomSheet = ({visibility, setVisibility}: Props) => {
+  const bottomSheetRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['10%', '85%'], []);
 
+  //handling bottomsheet visibility
+  useEffect(() => {
+    if (visibility) bottomSheetRef?.current?.present();
+    else bottomSheetRef?.current?.close();
+  }, [visibility]);
+
+  const handleAddPlayer = () => {
+    setVisibility(false);
+  };
+
   return (
-    <BottomSheet ref={bottomSheetRef} index={1} snapPoints={snapPoints}>
-      <View style={styles.contentContainer}>
-        {/* player name input */}
-        <Text style={styles.title}>Agregar un jugador</Text>
-        <Text style={styles.subTitle}>Nombre</Text>
-        <View style={styles.txtInput}>
-          <TextInput
-            placeholder=". . ."
-            maxLength={30}
-            style={{color: 'white', fontSize: 20}}
-            placeholderTextColor="white"
-            caretHidden={false}
-          />
-        </View>
+    <BottomSheetModalProvider>
+      <BottomSheetModal
+        ref={bottomSheetRef}
+        index={1}
+        snapPoints={snapPoints}
+        onDismiss={() => setVisibility(false)}>
+        <View style={styles.contentContainer}>
+          {/* player name input */}
+          <Text style={styles.title}>Agregar un jugador</Text>
+          <Text style={styles.subTitle}>Nombre</Text>
+          <View style={styles.txtInput}>
+            <TextInput
+              placeholder=". . ."
+              maxLength={30}
+              style={{color: 'white', fontSize: 20}}
+              placeholderTextColor="white"
+              caretHidden={false}
+            />
+          </View>
 
-        {/* player fetch */}
-        <View
-          style={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            flex: 1,
-          }}>
-          <PlayerCard playerData={player} />
+          {/* player fetch */}
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              flex: 1,
+            }}>
+            <PlayerCard playerData={player} />
 
-          <View style={{margin: 25}}>
-            <ActionButton title="Agregar al equipo" bgColor="#357a38" />
+            <View style={{margin: 25}}>
+              <ActionButton
+                title="Agregar al equipo"
+                onPress={handleAddPlayer}
+                bgColor="#357a38"
+              />
+            </View>
           </View>
         </View>
-      </View>
-    </BottomSheet>
+      </BottomSheetModal>
+    </BottomSheetModalProvider>
   );
 };
 
