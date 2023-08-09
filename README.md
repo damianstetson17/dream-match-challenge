@@ -34,7 +34,7 @@ límite.
 ```bash
 # Luego de descargarte el proyecto
 
-cd Dream-Match/Challenge
+cd Dream-Match-Challenge
 
 # instalamos dependencias
 
