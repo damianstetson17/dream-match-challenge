@@ -9,17 +9,9 @@ import {View, Text, StyleSheet, ActivityIndicator} from 'react-native';
 import {BottomSheetModal, BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 import {TextInput} from 'react-native-gesture-handler';
 import {useAppDispatch, useAppSelector} from '../../store/store';
-import {fetchPlayerData} from '../../store/slices/teamSlice';
+import {fetchPlayerData, resetError} from '../../store/slices/teamSlice';
 import SearchList from '../lists/searchPlayersList/SearchList';
-
-const player = {
-  player_image:
-    'https://apiv3.apifootball.com/badges/players/9898_k-benzema.jpg',
-  player_name: 'K. Benzema',
-  player_number: '9',
-  player_age: '35',
-  team_name: 'Real Madrid',
-};
+import OkPopup from '../popups/OkPopup';
 
 type Props = {
   visibility: boolean;
@@ -31,13 +23,25 @@ const AddPlayerBottomSheet = ({visibility, setVisibility}: Props) => {
     state => state.teams.teamSelected?.players,
   );
   const loading = useAppSelector(state => state.teams.loading);
+  const error = useAppSelector(state => state.teams.error);
   const dispatch = useAppDispatch();
 
+  const [showPopup, setShowPopup] = useState(false);
+
+  //show error msg popup
+  useEffect(() => {
+    if (error) {
+      setShowPopup(true);
+    }
+  }, [error]);
+
+  //bottom sheet
   const bottomSheetRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['10%', '85%'], []);
 
-  const [playerName, setPlayerName] = useState('');
+  const [searchPlayerName, setSearchPlayerName] = useState('');
 
+  //if user complete the team dismiss the bottom sheet
   useEffect(() => {
     if (playersInCurrentTeam?.length === 5) {
       setVisibility(false);
@@ -50,15 +54,13 @@ const AddPlayerBottomSheet = ({visibility, setVisibility}: Props) => {
     else bottomSheetRef?.current?.close();
   }, [visibility]);
 
-  const handleAddPlayer = () => {
-    setVisibility(false);
-  };
-
+  //fetch player in API
   const handleFetchedPlayers = () => {
-    if (playerName.length > 1) {
-      dispatch(fetchPlayerData(playerName));
+    if (searchPlayerName.length > 1) {
+      dispatch(fetchPlayerData(searchPlayerName));
     }
   };
+
   return (
     <BottomSheetModalProvider>
       <BottomSheetModal
@@ -77,7 +79,7 @@ const AddPlayerBottomSheet = ({visibility, setVisibility}: Props) => {
               style={{color: 'white', fontSize: 20}}
               placeholderTextColor="white"
               caretHidden={false}
-              onChangeText={name => setPlayerName(name)}
+              onChangeText={name => setSearchPlayerName(name)}
               onEndEditing={() => handleFetchedPlayers()}
             />
           </View>
@@ -97,6 +99,18 @@ const AddPlayerBottomSheet = ({visibility, setVisibility}: Props) => {
               </View>
             )}
           </View>
+
+          {/* error API popup msg */}
+          <OkPopup
+            title="Error al buscar jugadores"
+            message="Ocurrió un error al intentar buscar jugadores"
+            show={showPopup}
+            setShow={setShowPopup}
+            onConfirmPressed={() => {
+              setShowPopup(false);
+              dispatch(resetError());
+            }}
+          />
         </View>
       </BottomSheetModal>
     </BottomSheetModalProvider>

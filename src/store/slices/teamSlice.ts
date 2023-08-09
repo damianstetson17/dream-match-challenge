@@ -5,7 +5,7 @@ import {getPlayerData} from '../../services/ApiFootball/ApiFootball';
 interface TeamSlice {
   teams: Team[];
   loading: boolean;
-  error: string | undefined;
+  error: boolean;
   playerFetchedData: PlayerData[];
   teamSelected: Team | null;
 }
@@ -14,7 +14,7 @@ const initialState: TeamSlice = {
   teams: [],
   teamSelected: null,
   loading: false,
-  error: undefined,
+  error: false,
   playerFetchedData: [],
 };
 
@@ -26,6 +26,13 @@ export const fetchPlayerData = createAsyncThunk(
   async (player_name: string, thunkAPI) => {
     try {
       const response = await getPlayerData(player_name);
+
+      //if an error is returned
+      if (response.hasOwnProperty('error')) {
+        return thunkAPI.rejectWithValue(
+          'Ocurrió un error al intentar buscar jugadores, intentalo más tarde o verifica tus credenciales (.inv)',
+        );
+      }
       return response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error?.message);
@@ -44,9 +51,14 @@ export const teamSlice = createSlice({
 
     //set selected team state for handling updates
     addNewTeam: (state, action: PayloadAction<Team>) => {
+      const newTeam = action.payload;
+
       //can't add more than two teams
       if (state.teams.length < 2) {
-        state.teams = [...state.teams, action.payload];
+        //if not exists already a teamwith the same name
+        if (!state.teams.find(team => team.name === newTeam.name)) {
+          state.teams = [...state.teams, newTeam];
+        }
       }
     },
 
@@ -70,7 +82,6 @@ export const teamSlice = createSlice({
 
       //max players check (only 5)
       if (state.teamSelected.players.length === 5) {
-        state.error = 'El equipo ya está completo'
         return;
       }
 
@@ -119,7 +130,7 @@ export const teamSlice = createSlice({
     },
     //delete error msg
     resetError: state => {
-      state.error = undefined;
+      state.error = false;
     },
   },
   extraReducers: builder => {
@@ -136,7 +147,7 @@ export const teamSlice = createSlice({
       )
       .addCase(fetchPlayerData.rejected, (state, action) => {
         state.loading = false;
-        state.error = 'Ocurrió un error al intentar buscar jugadores';
+        state.error = true;
       });
   },
 });
@@ -149,6 +160,6 @@ export const {
   deleteTeam,
   updateTeam,
   resetData,
-  resetError
+  resetError,
 } = teamSlice.actions;
 export default teamSlice.reducer;

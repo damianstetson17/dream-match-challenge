@@ -13,11 +13,14 @@ import ConfirmPopup from '../components/popups/ConfirmPopup';
 import OkPopup from '../components/popups/OkPopup';
 
 const CreateTeam = () => {
+  const createdTeams = useAppSelector(state => state.teams.teams);
+
   const navigation = useNavigation<NavigationProp<any>>();
   const dispatch = useAppDispatch();
 
   const [showSavePopup, setShowSavePopup] = useState(false);
   const [showErrorPopup, setShowErrorPopup] = useState(false);
+  const [errorPopupMsg, setErrorPopupMsg] = useState('');
 
   const [visibility, setVisibility] = useState(false);
   const teamSelected = useAppSelector(state => state.teams.teamSelected);
@@ -36,15 +39,16 @@ const CreateTeam = () => {
 
   //handle bottom sheet visibility
   const handleAddPlayer = () => {
-    dispatch(resetData())
+    dispatch(resetData());
     setVisibility(!visibility);
   };
 
   const handleAddTeam = () => {
     //show error if team name is empty
     if (teamNewName.length === 0) {
-      setShowErrorPopup(true);
+      setErrorPopupMsg('El nombre del equipo no puede estar vacio');
       setShowSavePopup(false);
+      setShowErrorPopup(true);
       return;
     }
 
@@ -67,6 +71,15 @@ const CreateTeam = () => {
         we create a new team using the players added 
         in state.teams.teamSelected at AddPlayerBottomSheet component
       */
+
+      //check if not exists already a teamwith the same name
+      if (createdTeams.find(team => team.name === teamNewName)) {
+        setErrorPopupMsg('Ya existe un equipo con el mismo nombre');
+        setShowSavePopup(false);
+        setShowErrorPopup(true);
+        return;
+      }
+
       const newTeam: Team = {
         name: teamNewName,
         number: teamNewNumber,
@@ -173,7 +186,7 @@ const CreateTeam = () => {
       {/* name lenght restriction popup */}
       <OkPopup
         title="Error en nombre del equipo"
-        message="El nombre del equipo no puede estar vacío"
+        message={errorPopupMsg}
         show={showErrorPopup}
         setShow={setShowErrorPopup}
         onConfirmPressed={() => setShowErrorPopup(false)}
